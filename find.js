@@ -1,9 +1,7 @@
 var box = document.getElementById("box");
 var boxHeight = box.offsetHeight;
 var boxWidth = box.offsetWidth;
-var setRed = 255;
-var setGreen = 102;
-var setBlue = 0;
+var hue = 254;
 
 //hardcode target as center
 //randomize later
@@ -19,31 +17,31 @@ var distance = function (x0, y0, x1, y1) {
     return ((x0 - x1) ** 2 + (y0 - y1) ** 2) ** (0.5);
 };
 
+//determine mouse location, calculate distance to target, give to colorize
 var findIt = function(e) {
     var x = e.clientX;
     var y = e.clientY;
     var d = distance(x,y,targetX,targetY);
-    console.log(d);
     colorize(d);
+    check(x, y);
 };
 
-
-//white(255, 255, 255) to orange(255, 102, 0)
+//hsl(hue, saturation, brightness);
+//0(black) to 50(hue) brightness.
+//sets the color of the box to certain hue; 1028.52 is greatest distance in box
 var colorize = function(d) {
-    var red = (255 - setRed) * d;
-    
+    var degree = 50 - (d/1028.52 * 50);
+    var color = "background-color: hsl(" + hue + ", 100%, " + degree + "%)";
+    box.setAttribute("style", color);
 }
 
-var check = function(e) {
-    if (Math.abs(e.clientX-targetX) < 5 && Math.abs(e.clientY-targetY) < 5) {
-	alert("You've won!");
+//check mouse's location to see if its distance is 
+var check = function(x, y) {
+    if (Math.abs(x-targetX) < 10 &&
+	Math.abs(y-targetY) < 10) {
+	alert("You've found it!");
     }
 }
-/*
-your OTHER FXNS
-
-*/
 
 box.addEventListener("mousemove", findIt);
-box.addEventListener("click", check);
 
