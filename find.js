@@ -1,12 +1,14 @@
 var box = document.getElementById("box");
 var boxHeight = box.offsetHeight;
 var boxWidth = box.offsetWidth;
+var score = 0;
 var hue = 254;
 
 //hardcode target as center
 //randomize later
-var targetX = boxWidth / 2;
-var targetY = boxHeight / 2;
+var targetX = boxWidth * Math.random();
+var targetY = boxHeight * Math.random();
+
 
 
 console.log( "box height: " + boxHeight );
@@ -22,6 +24,7 @@ var findIt = function(e) {
     var x = e.clientX;
     var y = e.clientY;
     var d = distance(x,y,targetX,targetY);
+	console.log(d);
     colorize(d);
     check(x, y);
 };
@@ -36,12 +39,17 @@ var colorize = function(d) {
 }
 
 //check mouse's location to see if its distance is 
-var check = function(x, y) {
+var check = function(e) {
+	var x = e.clientX;
+    var y = e.clientY;
     if (Math.abs(x-targetX) < 10 &&
 	Math.abs(y-targetY) < 10) {
 	alert("You've found it!");
+	targetX = boxWidth * Math.random();
+	targetY = boxHeight * Math.random();
     }
 }
 
 box.addEventListener("mousemove", findIt);
+box.addEventListener("click", check);
 
